@@ -1,0 +1,24 @@
+import { NextResponse } from "next/server";
+
+export async function GET() {
+  const videos = [
+    {
+      id: "1",
+      title: "Sample Short — Campus Film (Demo)",
+      description: "A short demo clip. Replace with your own legal content.",
+      src: "/videos/sample1.mp4",
+      poster: "/posters/sample1.jpg",
+      price_usd: 0.5
+    },
+    {
+      id: "2",
+      title: "Sample Short 2 — Campus Clips",
+      description: "Another demo clip.",
+      src: "/videos/sample2.mp4",
+      poster: "/posters/sample2.jpg",
+      price_usd: 0.3
+    }
+  ];
+
+  return NextResponse.json(videos);
+}
