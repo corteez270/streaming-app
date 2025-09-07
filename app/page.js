@@ -18,7 +18,6 @@ export default function Home() {
       .then((data) => setVideos(data || []));
   }, []);
 
-  // collect unique categories
   const categories = ["All", ...Array.from(new Set(videos.map(v => v.category || "Uncategorized")) )];
 
   const filtered = videos
@@ -38,6 +37,58 @@ export default function Home() {
 
           {/* Top Ad */}
           <AdBox />
+
+          {/* Featured Banner */}
+          {videos.length > 0 ? (
+            <div style={{
+              position: "relative",
+              width: "100%",
+              height: "400px",
+              marginBottom: "20px",
+              overflow: "hidden",
+              borderRadius: "12px"
+            }}>
+              <img
+                src={videos[0].poster}
+                alt={videos[0].title}
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                onError={(e)=>{ e.currentTarget.src = "https://via.placeholder.com/1200x400?text=No+Poster"; }}
+              />
+              <div style={{
+                position: "absolute",
+                top: 0, left: 0, right: 0, bottom: 0,
+                background: "linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.2))",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-end",
+                padding: "20px"
+              }}>
+                <h2 style={{ fontSize: "28px", margin: 0 }}>{videos[0].title}</h2>
+                <p style={{ maxWidth: "600px", color: "#ccc" }}>
+                  {videos[0].category || "Featured Movie"}
+                </p>
+                <button
+                  onClick={() => setSelectedVideo(videos[0])}
+                  style={{
+                    marginTop: "12px",
+                    padding: "10px 20px",
+                    fontSize: "16px",
+                    borderRadius: "8px",
+                    background: "#0070f3",
+                    color: "#fff",
+                    border: "none",
+                    cursor: "pointer"
+                  }}
+                >
+                  ▶ Play
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div style={{ textAlign: "center", padding: "40px", color: "#aaa" }}>
+              Loading featured movie...
+            </div>
+          )}
 
           <div style={{ maxWidth: 1100, margin: "0 auto", padding: "20px" }}>
             {/* Search + categories */}
@@ -89,10 +140,11 @@ export default function Home() {
                   key={video.id}
                   style={{
                     background: "#111",
-                    borderRadius: 8,
+                    borderRadius: 12,
                     overflow: "hidden",
                     transition: "transform 0.25s ease, box-shadow 0.25s ease",
-                    cursor: "pointer"
+                    cursor: "pointer",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.3)"
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = "scale(1.03)";
@@ -100,7 +152,7 @@ export default function Home() {
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = "scale(1)";
-                    e.currentTarget.style.boxShadow = "none";
+                    e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.3)";
                   }}
                 >
                   {/* Poster */}
@@ -113,9 +165,12 @@ export default function Home() {
                         inset: 0,
                         width: "100%",
                         height: "100%",
-                        objectFit: "cover"
+                        objectFit: "cover",
+                        transition: "transform 0.3s ease"
                       }}
-                      onError={(e)=>{ e.currentTarget.src = "https://picsum.photos/400/225"; }}
+                      onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.05)" }}
+                      onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)" }}
+                      onError={(e)=>{ e.currentTarget.src = "https://via.placeholder.com/400x225?text=No+Poster"; }}
                     />
                     {/* Play button overlay */}
                     <div
